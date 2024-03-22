@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="theme" rel="stylesheet" href="css/Reminder.css">
+    <script src="Weather.js"></script>
+    <title>Document</title>
+</head>
+
+
+<body>
+    <div class = "MainMenu">
+
+        <!-- Back to Main menu -->
+        <div class="MainMenuButton">
+            <form action="index.html" class="BackButton">
+                <button type="submit">
+
+                    <div class= "BackToMainMenuButton">
+                        <img src="img/BackArrow.png" alt="BackToMainMenu">
+                        <p class="BackToMainMenuTitle">Main Menu</p>
+                    </div>
+                    
+                </button>
+            </form>
+        </div>
+
+
+    <form  id = "form">
+            <!-- Reminder Title div-->
+            <div class="Box_Title">Reminder</div>
+    
+            <!-- Reminder Box div, 3 sections-->
+            <div class="Reminder_Box" id="frame">
+
+                <div class = "Time_Box" id="DateOfEvent"></div>
+                
+                <textarea class = "Text_Box" name="TB" id="Reminder_Text" cols="30" rows="10" placeholder="Write Reminder..."></textarea>
+    
+                <div class="Reminder_Title">Set a date to remind you</div>
+
+
+                <input class = "Time_Box" type="date" name="Date" id="Date_of_Reminder">
+
+
+
+                <div class="Reminder_Title">Set a time to remind you</div>
+                <input class ="Time_Box" type="time" name = "Time" id="Time_of_Reminder">
+            </div>
+            
+            <!-- Button div-->
+
+            <button type = "submit" class = "Button">Set Reminder</button>
+    </form>
+
+
+
+
+
+    
+
+    <script>
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        
+        //Change the date on top. To show date of event
+
+        let TheDay = localStorage.getItem("EventDate");
+        let EventDate = "";
+
+        // setting up minimum calendar date
+
+        function Zero(value) {
+            if (value < 10) {
+                return "0" + value.toString();
+            }
+            return value.toString();
+        }
+
+
+        //replacing html code
+
+        let RemindDate = "";
+        RemindDate += 
+        
+        `<div class = "Time_Box">`+TheDay+`</div> 
+                
+                <textarea class = "Text_Box" name="TB" id="Reminder_Text" cols="30" rows="10" placeholder="Write Reminder...">`+getTextForDate(TheDay)+`</textarea>
+    
+                <div class="Reminder_Title">Set a date to remind you</div>
+                <input class = "Time_Box" type="date" name="Date" id="Date_of_Reminder" min="`+yyyy+`-`+Zero(mm)+`-`+dd+`" max="9999-12-31">
+                <div class="Reminder_Title">Set a time to remind you</div>
+                <input class ="Time_Box" type="time" name = "Time" id="Time_of_Reminder">
+        `
+        
+        // <input class = "Time_Box" type="date" name="Date" id="Date_of_Reminder" min="2024-03-19" max="9999-12-31">
+
+        document.getElementById('frame').innerHTML= RemindDate
+
+
+
+
+        //code that stores a date and reminder
+
+        var correlations = {};
+
+        //sets data
+        function correlate(date, text) {
+            const array = JSON.parse(localStorage.getItem("correlations")) || [];
+            
+            correlations[date] = text;
+            localStorage.setItem('correlations', JSON.stringify(correlations));
+        }
+
+        //gets data
+        function getTextForDate(date) {
+            correlations = JSON.parse(localStorage.getItem('correlations'));
+
+            if (correlations[date] != undefined){
+                return correlations[date]
+            }
+            else{
+                return ""
+            }
+        }
+
+        //testing
+        correlate('2024-03-21', 'This is to set up...');
+
+        console.log(getTextForDate('2024-03-21')); 
+
+        // correlate(TheDay, 'test1');
+
+        // console.log(getTextForDate(TheDay)); 
+
+        // console.log(correlations)
+
+        
+
+         // stores content
+         form.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            var remText = document.getElementById('Reminder_Text');
+            var remDate = document.getElementById('Date_of_Reminder');
+            var remTime = document.getElementById('Time_of_Reminder');
+
+            var ReminderTextValue = remText.value;
+            var ReminderDatevalue = remDate.value;
+            var ReminderTimevalue = remTime.value;
+
+
+            if (ReminderTextValue!="" && ReminderDatevalue!="" && ReminderTimevalue!=""){
+                console.log(TheDay)
+                console.log(ReminderTextValue)
+                correlate(TheDay,ReminderTextValue);
+                window.location.href = "index.html"
+            }
+            else{
+                alert("You havent filled in all details, Please double check.")
+            }
+
+        })
+
+    </script>
+</body>
+</html>
