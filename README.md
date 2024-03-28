@@ -3,7 +3,7 @@ Your task is to design and prototype a weather app, which is a web-based applica
 
 There are thousands of weather apps and weather forecasting web pages. Most mobile phones now come with a built-in weather app. You might think that these apps are very simple - they just tell you the weather, after all. However, when you look at them closely you will see that there are a number of complex design questions that need to be answered:
 
-  • Who is the app for?
+ # Who is the app for?
   • What will they use it for?
   • What is the most important information to show the user?
   • How can my app stand out against the thousands of other apps?
